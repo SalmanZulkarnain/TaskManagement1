@@ -17,8 +17,10 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         $search = $request->input('search');  
+        $filter = $request->input('filter');  
 
-        $tasks = Task::where('user_id', Auth::id())->where(function ($query) use ($search) {$query->where('title', 'like', "%$search%")->orWhere('description', 'like', "%$search%");})->get();
+        $tasks = Task::where('tasks.user_id', Auth::id())->get();
+        // $categories = Category::where('user_id', Auth::id())->where(function ($query) use ($filter) {$query->where('name', 'like', "%$filter%");})->get();
         
         $today = Carbon::today();
 
@@ -33,8 +35,7 @@ class TaskController extends Controller
     public function create()
     {
         $categories = Category::where('user_id', Auth::id())->get();
-        
-
+    
         return view('task.create', compact('categories'));
 
     }
